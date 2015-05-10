@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Configuration;
 using System.Data;
+using System.Xml;
 
 public partial class SearchSenderPage : System.Web.UI.Page
 {
@@ -355,8 +356,10 @@ public partial class SearchSenderPage : System.Web.UI.Page
     protected void btnSubmit_Click(object sender, EventArgs e)
     {
 
+
         string senderID = loadSenderID();
         string receiverID = loadReceiverID();
+
         string locationID = ddlLocationID.SelectedValue;
 
         if (
@@ -428,6 +431,107 @@ public partial class SearchSenderPage : System.Web.UI.Page
         }
     }
 
+    private void checkOFAC(string name)
+    {
+        try
+        {
+            string ofacVerify = string.Empty;
+            ofacservice.OFACService service;
+            service = new ofacservice.OFACService();
+            string token = service.Logon(3317, "KoromStar", "NRzhq8kc");
+            string xml = service.OFACScanName(token, name);
+
+            if (xml != "")
+            {
+                ofacVerify = ProcessXML(xml,name);
+                if (ofacVerify == "Y")
+                {
+                    txtName.BackColor = System.Drawing.Color.Red;
+                }
+                else
+                {
+                    txtName.BackColor = System.Drawing.Color.Green;
+                }
+            }
+
+        }
+        catch (Exception ex)
+        {
+            lblmessage.Text = "OFAC Login Problem...<br/> So without Checking OFAC we are adding this Customer.<br/>Please Contact with OFAC Office or better the Develeoper of this software(Anam)";
+        }
+    }
+    private string ProcessXML(string xml,string name)
+    {
+        string isOfaceVerify = string.Empty;
+        try
+        {
+            //comboBanks.Items.Clear();
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.LoadXml(xml);
+            XmlNodeList nodeList = xmlDoc.SelectNodes("//OFACMatch");
+
+            string srchFirstName ="";
+            string srchMiddleName = "";
+            string srchLastName = "";
+
+            if (name.Split(' ').Length == 2)
+            {
+                srchFirstName = name.Split(' ')[0];
+                srchLastName = name.Split(' ')[1];
+            }
+            if (name.Split(' ').Length == 3)
+            {
+                srchFirstName = name.Split(' ')[0];
+                srchMiddleName = name.Split(' ')[1];
+                srchLastName = name.Split(' ')[2];
+            }
+
+
+            int countFirstName = 0;
+            int countMiddleName = 0;
+            int countLastName = 0;
+
+
+            for (int i = 0; i < nodeList.Count; i++)
+            {
+
+                string strOriginal = string.Empty;
+                strOriginal = nodeList[i].ChildNodes[2].InnerText.ToLower();
+
+                System.Text.RegularExpressions.Regex rexFirst = new System.Text.RegularExpressions.Regex(srchFirstName);
+                countFirstName = rexFirst.Matches(strOriginal).Count;
+
+                System.Text.RegularExpressions.Regex rexMiddle = new System.Text.RegularExpressions.Regex(srchMiddleName);
+                countMiddleName = rexMiddle.Matches(strOriginal).Count;
+
+                System.Text.RegularExpressions.Regex rexLast = new System.Text.RegularExpressions.Regex(srchLastName);
+                countLastName = rexLast.Matches(strOriginal).Count;
+                if (countFirstName >= 1 && countMiddleName >= 1 && countLastName >= 1)
+                {
+                    //lblMessage.Text = srchString + " occurs " + count + " times";
+
+                    isOfaceVerify = "N";
+                    i = nodeList.Count;
+                    //lblOfacMessage.Text = "Suspecious Activity Found";
+                }
+
+                else
+                {
+                    isOfaceVerify = "Y";
+                    //lblOfacMessage.Text = "Suspecious Activity Not Found";
+                }
+
+            }
+
+
+        }
+        catch (Exception)
+        {
+        }
+
+
+        return isOfaceVerify;
+    }
     private bool checkRefCodeDuplicate()
     {
         string sql = "select top 1 * from TRANS where TRANSDT='" + DateTime.Parse(txtDate.Text).ToString("yyyy-MM-dd") + @"' and REFCODE='" + lblReferenceCode.Text.Trim() + @"' and TRANSSTATUS='PENDING'";
@@ -558,6 +662,7 @@ BEGIN
            ,GETDATE()--<UPDATEDON, datetime,>
            );
 SET @SenderID =SCOPE_IDENTITY();
+set @SenderID= (-1)*@SenderID
 END
 
 select @SenderID;
@@ -565,5 +670,18 @@ select @SenderID;
         ";
 
         return MSSQL.SQLExec(sql).Tables[0].Rows[0][0].ToString();
+    }
+    protected void gvTRANS_SelectedIndexChanged(object sender, EventArgs e)
+    {
+
+    }
+    protected void txtName_TextChanged(object sender, EventArgs e)
+    {
+        string senderID = loadSenderID();
+        if (int.Parse(senderID) < 0) //new customer
+        {
+            checkOFAC(txtName.Text.Trim().Replace("'", "''").Replace("  ", " ").Trim());
+        }
+        
     }
 }

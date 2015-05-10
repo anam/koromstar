@@ -98,8 +98,8 @@
                     </td>
                     <td>
                         <span class="regBoxbig1">
-                            <asp:TextBox ID="txtName" runat="server" Text="" CssClass="txtRegbig1">
-                            </asp:TextBox>
+                            <asp:TextBox ID="txtName" runat="server" Text="" CssClass="txtRegbig1" 
+                            AutoPostBack="True" ontextchanged="txtName_TextChanged"></asp:TextBox>
                         </span>
                     </td>
                 </tr>
@@ -507,7 +507,8 @@
             <br />
             <div style=" width:650px ; overflow:scroll;">
         
-                <asp:GridView ID="gvTRANS" runat="server" AutoGenerateColumns="false" CssClass="gridCss">
+                <asp:GridView ID="gvTRANS" runat="server" AutoGenerateColumns="false" 
+                    CssClass="gridCss" onselectedindexchanged="gvTRANS_SelectedIndexChanged">
             <Columns>
 
                 <asp:TemplateField HeaderText="CUSTID">
