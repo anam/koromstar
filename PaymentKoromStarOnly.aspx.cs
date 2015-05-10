@@ -671,19 +671,48 @@ select @SenderID;
 
         return MSSQL.SQLExec(sql).Tables[0].Rows[0][0].ToString();
     }
+    private string loadSenderIDOFAC()
+    {
+        string sql = @"
+        Declare @SenderID int
+        Set @SenderID =
+(
+    select top 1 CUSTOMERID from CUSTOMER where CUSTFNAME='" + txtName.Text.Trim().Replace("'", "''").Replace("  ", " ").Trim() + @"'
+)
+
+if @SenderID is NULL
+BEGIN
+
+set @SenderID= (-1)
+END
+
+select @SenderID;
+
+        ";
+
+        return MSSQL.SQLExec(sql).Tables[0].Rows[0][0].ToString();
+    }
     protected void gvTRANS_SelectedIndexChanged(object sender, EventArgs e)
     {
 
     }
     protected void txtName_TextChanged(object sender, EventArgs e)
     {
-        string senderID = loadSenderID();
-        if (int.Parse(senderID) < 0) //new customer
+        string senderID = loadSenderIDOFAC();
+        if (chkOFAC.Checked)
         {
-            checkOFAC(txtName.Text.Trim().Replace("'", "''").Replace("  ", " ").Trim());
+            if (int.Parse(senderID) < 0) //new customer
+            {
+                checkOFAC(txtName.Text.Trim().Replace("'", "''").Replace("  ", " ").Trim());
+            }
+            else
+                txtName.BackColor = System.Drawing.Color.Green;
         }
         else
-            txtName.BackColor = System.Drawing.Color.Green;
+        {
+                checkOFAC(txtName.Text.Trim().Replace("'", "''").Replace("  ", " ").Trim());
+        }
+        
         
     }
 }
