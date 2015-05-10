@@ -682,6 +682,8 @@ select @SenderID;
         {
             checkOFAC(txtName.Text.Trim().Replace("'", "''").Replace("  ", " ").Trim());
         }
+        else
+            txtName.BackColor = System.Drawing.Color.Green;
         
     }
 }
