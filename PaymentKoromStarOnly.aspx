@@ -90,7 +90,15 @@
                     <col width="15%" style=" font-weight:bold;" />
                     <col width="85%" align="left" />
                 </colgroup>
-                
+                <tr>
+                    <td>
+                        
+                    </td>
+                    <td>
+                        
+                            <asp:CheckBox ID="chkOFAC" runat="server" Checked="true" Text="Check Only if new Customer"/>
+                    </td>
+                </tr>
                
                 <tr>
                     <td>
@@ -98,8 +106,7 @@
                     </td>
                     <td>
                         <span class="regBoxbig1">
-                            <asp:CheckBox ID="chkOFAC" runat="server" Checked="true" Text="Check Only if new Customer"/>
-                            <br />
+                            
                             <asp:TextBox ID="txtName" runat="server" Text="" CssClass="txtRegbig1" 
                             AutoPostBack="True" ontextchanged="txtName_TextChanged"></asp:TextBox>
                         </span>
