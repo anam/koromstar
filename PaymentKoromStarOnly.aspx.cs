@@ -662,7 +662,7 @@ BEGIN
            ,GETDATE()--<UPDATEDON, datetime,>
            );
 SET @SenderID =SCOPE_IDENTITY();
-set @SenderID= (-1)*@SenderID
+--set @SenderID= (-1)*@SenderID
 END
 
 select @SenderID;
