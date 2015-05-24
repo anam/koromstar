@@ -384,8 +384,6 @@ public partial class SearchSenderPage : System.Web.UI.Page
         {
             TRANS tRANS = new TRANS();
 
-
-
             tRANS.CUSTID = int.Parse(senderID);
             tRANS.RECEIVERID = int.Parse(receiverID);
             tRANS.LOCATIONID = int.Parse(locationID); ;
@@ -712,7 +710,7 @@ select @SenderID;
         {
                 checkOFAC(txtName.Text.Trim().Replace("'", "''").Replace("  ", " ").Trim());
         }
-        
+        txtReceiverName.Focus();
         
     }
 }

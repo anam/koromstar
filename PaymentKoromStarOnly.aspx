@@ -1,8 +1,8 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MemberMaster.master" AutoEventWireup="true"
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MemberMasterPayment.master" AutoEventWireup="true"
     CodeFile="PaymentKoromStarOnly.aspx.cs" Inherits="SearchSenderPage" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
-<script language="javascript" type="text/javascript">
+    <script language="javascript" type="text/javascript">
     function validate() {
         if (document.getElementById("<%=txtSendingAmount.ClientID%>").value == "") {
             alert("Sending Amount can not be blank");
@@ -66,9 +66,12 @@
             document.getElementById("<%=txtTotalCharge.ClientID%>").value = totalAmount.toFixed(2);
         }
 </script>
+<style type="text/css">
+.tblFormat td{padding:5px;}
+</style>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="cpMenu" runat="Server">
-                    	<ul style='display:none;'>
+                        <ul style='display:none;'>
         <li><a href="SearchSenderPage.aspx">Search Sender</a></li>
         <li><a href="CUSTOMERInsertUpdate.aspx?cUSTOMERID=0">Sender</a></li>
         <li><a href="SearchReceiverPage.aspx">Search Receiver</a></li>
@@ -82,7 +85,59 @@
                         </ul>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="mainMemberContent" runat="Server">
-    <div class="memberReg">
+<table border="1" cellspacing="0" cellpadding="10" class='tblFormat'>
+<tr>
+    <td colspan="7">
+                            <asp:CheckBox ID="chkOFAC" runat="server" Checked="true" Text="Check Only if new Customer"/>
+    
+    </td>
+</tr>
+<tr>
+    <td>Sender</td>
+    <td>Receiver</td>
+    <td>Amount</td>
+    <td>Commision</td>
+    <td>Code</td>
+    <td>Destination</td>
+    <td>
+        </td>
+</tr>
+<tr>
+    <td><asp:TextBox ID="txtName" runat="server" Text="" width="200px"
+                            AutoPostBack="True" ontextchanged="txtName_TextChanged"></asp:TextBox></td>
+    <td>
+     <asp:TextBox ID="txtReceiverName" runat="server" Text="" width="200px">
+                            </asp:TextBox>
+    </td>
+    <td>
+    <asp:TextBox ID="txtSendingAmount" runat="server"  Text="0" onkeyup="calculation()" Width="75px">
+                                        </asp:TextBox>
+    </td>
+    <td>
+    <asp:TextBox ID="txtServiceCharge" runat="server"   Width="75px"
+                                        Text="0" onkeyup="calculation()"> </asp:TextBox>
+    </td>
+    <td>
+     <asp:TextBox ID="lblReferenceCode" runat="server" Text=""  CssClass="txtRegbig"  Width="100px"></asp:TextBox>
+    </td>
+    <td>
+    <asp:DropDownList ID="ddlLocationID" runat="server">
+                            </asp:DropDownList>
+    </td>
+    <td>
+       
+       <asp:Button ID="btnSubmit" runat="server" Text="Submit"  
+                            onclick="btnSubmit_Click" />
+       </td>
+</tr>
+<tr>
+<td colspan="7">
+<asp:Label ID="lblmessage" runat="server" Font-Bold="True" Font-Size="14px" 
+                                ForeColor="Maroon"></asp:Label>
+</td>
+</tr>
+</table>
+    <div class="memberReg" style="display:none;">
         <!-- Begin: memberReg -->
         <div class="nameRow">
            <table style="width: 100%; table-layout: fixed;">
@@ -96,7 +151,6 @@
                     </td>
                     <td>
                         
-                            <asp:CheckBox ID="chkOFAC" runat="server" Checked="true" Text="Check Only if new Customer"/>
                     </td>
                 </tr>
                
@@ -107,8 +161,7 @@
                     <td>
                         <span class="regBoxbig1">
                             
-                            <asp:TextBox ID="txtName" runat="server" Text="" CssClass="txtRegbig1" 
-                            AutoPostBack="True" ontextchanged="txtName_TextChanged"></asp:TextBox>
+                            
                         </span>
                     </td>
                 </tr>
@@ -214,8 +267,7 @@
                             <tr>
                                 <td>
                                 <span class="regBoxbig1">
-                            <asp:TextBox ID="txtReceiverName" runat="server" Text="" CssClass="txtRegbig1">
-                            </asp:TextBox>
+                           
                         </span>
                                     <span class="regBoxsmall" style="display:none;">
                                         <asp:TextBox ID="txtFirstName" runat="server" Text="" CssClass="txtRegsmall">
@@ -246,8 +298,7 @@
                         <span class="regBoxsmall">
                             <asp:TextBox ID="txtBranch" runat="server" Visible="false"  Text="" CssClass="txtRegsmall">
                             </asp:TextBox>
-                            <asp:DropDownList ID="ddlLocationID" runat="server">
-                            </asp:DropDownList>
+                            
                         </span>
                     </td>
                 </tr>
@@ -312,8 +363,7 @@
                                 </td>
                                 <td>
                                    <span class="regBoxbig_small">
-                                    <asp:TextBox ID="txtSendingAmount" runat="server"  CssClass="txtRegbig" Text="0" onkeyup="calculation()">
-                                        </asp:TextBox>
+                                    
 
                                         <ajaxToolkit:FilteredTextBoxExtender ID="ftbe" runat="server" TargetControlID="txtSendingAmount"
                                             FilterType="Custom, Numbers" ValidChars="."  />
@@ -326,9 +376,7 @@
                                 </td>
                                 <td>
                                    <span class="regBoxbig_small">
-                                    <asp:TextBox ID="txtServiceCharge" runat="server"  CssClass="txtRegbig" 
-                                        Text="0" onkeyup="calculation()">
-                                        </asp:TextBox>
+                                    
                                         </span>
                                 </td>                                
                             </tr>
@@ -409,7 +457,7 @@
                                 </td>
                                 <td>
                                    <span class="regBoxbig_small">
-                                    <asp:TextBox ID="lblReferenceCode" runat="server" Text=""  CssClass="txtRegbig" ></asp:TextBox>
+                                   
                                         </span>
                                 </td>                                
                             </tr>
@@ -488,8 +536,7 @@
                             Text="Another Transaction" CssClass="btnregtop_payment"  style="display:none;"
                              OnClientClick=" return validate()" 
                             onclick="btnAnotherTransaction_Click"  />
-                        <asp:Button ID="btnSubmit" runat="server" Text="Submit" CssClass="btnregtop" 
-                            onclick="btnSubmit_Click" />
+                        
                             
                     </td>
                 </tr>
@@ -497,8 +544,6 @@
                     <td>
                     </td>
                     <td style=" padding-top:10px;">
-                            <asp:Label ID="lblmessage" runat="server" Font-Bold="True" Font-Size="14px" 
-                                ForeColor="Maroon"></asp:Label>
                     </td>
                 </tr>
 <%--                <tr>
