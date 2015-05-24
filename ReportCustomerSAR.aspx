@@ -49,7 +49,7 @@
                 </tr>
             </table>
             <h1 style="font-size: 15px; margin-bottom: 10px">
-                Customer SAR Report</h1>
+                Customer CTR Report</h1>
             <asp:GridView ID="gvCustomer" runat="server" CssClass="tutorial" AutoGenerateColumns="false"
                 AllowPaging="false" ShowHeader="false" OnRowDataBound="gvCustomer_RowDataBound">
                 <PagerStyle CssClass="papperStyle" />
