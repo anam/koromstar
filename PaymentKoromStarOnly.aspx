@@ -87,9 +87,15 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="mainMemberContent" runat="Server">
 <table border="1" cellspacing="0" cellpadding="10" class='tblFormat'>
 <tr>
-    <td colspan="7">
+    <td>
                             <asp:CheckBox ID="chkOFAC" runat="server" Checked="true" Text="Check Only if new Customer"/>
-    
+   
+    </td>
+    <td colspan="6">
+          Date: <asp:TextBox ID="txtDate" runat="server"  CssClass="txtRegbig" Text="" >
+                                        </asp:TextBox>
+                        <ajaxToolkit:CalendarExtender ID="CalendarExtender2" runat="server" TargetControlID="txtDate" CssClass="MyCalendar" Format="MM/dd/yyyy" PopupButtonID="Image1" />                    
+                                
     </td>
 </tr>
 <tr>
@@ -350,10 +356,7 @@
                                 </td>
                                 <td>
                                    <span class="regBoxbig_small">
-                                    <asp:TextBox ID="txtDate" runat="server"  CssClass="txtRegbig" Text="0" >
-                                        </asp:TextBox>
-                        <ajaxToolkit:CalendarExtender ID="CalendarExtender2" runat="server" TargetControlID="txtDate" CssClass="MyCalendar" Format="MM/dd/yyyy" PopupButtonID="Image1" />                    
-                       
+                                    
                                         </span>
                                 </td>                                
                             </tr>
