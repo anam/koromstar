@@ -360,7 +360,8 @@ public partial class AgentWiseReport : System.Web.UI.Page
     {
         Session["LocationID"]=getLocationIDs();
         Session["Status"] = loadStatus();
-        lblPrintLink.Text = @"<a target='_blank' href='ReportLocationWisePrint.aspx?FromDate="+txtFromDate.Text+@"&ToDate="+txtToDate.Text+@"'>Show Report</a>";
+        lblPrintLink.Text = @"<hr/><a target='_blank' href='ReportLocationWisePrint.aspx?FromDate=" + txtFromDate.Text + @"&ToDate=" + txtToDate.Text + @"'>Show Report</a>";
+        lblPrintLink.Text += @"<hr/><a target='_blank' href='ReportLocationWisePrintEdit.aspx?FromDate=" + txtFromDate.Text + @"&ToDate=" + txtToDate.Text + @"'>Show Edit Page</a>";
         /*
         gvLocation.DataSource = LOCATIONManager.GetAllLOCATIONsForReportByDatenAmountLocationIDsStatus(loadStatus(), getLocationIDs(),int.Parse(ddlAgent.SelectedValue), txtFromDate.Text, txtToDate.Text, int.Parse(txtMoney.Text == "" ? "0" : txtMoney.Text));
         gvLocation.DataBind();
